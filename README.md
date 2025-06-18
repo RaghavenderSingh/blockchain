@@ -36,10 +36,21 @@ src/
 - Maintains a ledger of wallet balances
 - Provides chain integrity verification
 
-### Transaction (`src/block.rs`)
-- Represents transfers between wallet addresses
-- Includes sender, receiver, and amount
-- Supports serialization for blockchain storage
+### Transaction and Wallet System (`src/block.rs`, `src/wallet.rs`)
+- **Basic Transaction Structure**:
+  - Sender and receiver addresses
+  - Transaction amount
+  - Serialization support for blockchain storage
+- **Signed Transaction Support**:
+  - Digital signatures using Ed25519
+  - Public key verification
+  - Transaction integrity protection
+- **Wallet Features** (Planned):
+  - Ed25519 key pair generation
+  - Transaction signing
+  - Balance management
+  - Address generation
+  - Secure key storage
 
 ## Dependencies
 
@@ -80,20 +91,27 @@ cargo run
 
 ```rust
 use blockchain::blockchain::Blockchain;
-use blockchain::block::Transaction;
+use blockchain::block::{Transaction, SignedTransaction};
+// Note: Wallet implementation coming soon
+// use blockchain::wallet::Wallet;
 
 fn main() {
     // Create a new blockchain with difficulty 4
     let mut blockchain = Blockchain::new(4);
     
-    // Create a transaction
+    // Basic transaction (without signature)
     let transaction = Transaction {
         sender: "Alice".to_string(),
         receiver: "Bob".to_string(),
         amount: 100,
     };
     
-    // Add a block with the transaction
+    // Future wallet usage (coming soon):
+    // let wallet = Wallet::new();
+    // let signed_tx = wallet.sign_transaction(transaction);
+    // blockchain.add_block(vec![signed_tx]);
+    
+    // Current usage (without signatures)
     blockchain.add_block(vec![transaction]);
     
     // Validate the blockchain
@@ -132,7 +150,17 @@ hash = SHA256(index + timestamp + transactions_json + previous_hash + nonce)
 
 ## Future Enhancements
 
-- [ ] Wallet implementation with Ed25519 signatures
+### Wallet Implementation (In Progress)
+The wallet system is currently under development with the following planned features:
+- [ ] Ed25519 keypair generation and management
+- [ ] Secure private key storage with encryption
+- [ ] Transaction signing and verification
+- [ ] Address generation and validation
+- [ ] Balance tracking and transaction history
+- [ ] Key import/export functionality
+- [ ] Optional hardware wallet support
+
+### Other Planned Features
 - [ ] Network communication and peer-to-peer functionality
 - [ ] Transaction pool and mempool management
 - [ ] Smart contract support
